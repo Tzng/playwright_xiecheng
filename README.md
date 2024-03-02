@@ -15,7 +15,7 @@ python3 -m pip3 config set global.index-url https://pypi.tuna.tsinghua.edu.cn/si
 安装依赖
 
 ```shell
-pip3 install -r requirements.txt
+pip3 install pandas playwright
 ```
 
 安装需要的浏览器
