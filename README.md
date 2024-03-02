@@ -26,8 +26,10 @@ playwright install
 
 ## 运行
 
-prod模式启动项目
+适用Vscode的话，直接在xiecheng.py文件中按F5运行即可
+
+## 命令行运行
 
 ```shell
-uvicorn theling_web_data.main:app --reload  --host 127.0.0.1 --port 9110 --workers 1 --reload --env-file env/prod.env
+python3 xiecheng.py
 ```
