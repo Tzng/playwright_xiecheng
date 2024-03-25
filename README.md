@@ -33,3 +33,19 @@ playwright install
 ```shell
 python3 xiecheng.py
 ```
+
+# 爬取美团点评的数据
+
+## 获取cookie
+
+1. 打开浏览器，登录美团点评
+2. 打开开发者工具，找到cookie
+
+![img.png](./img/img.png)
+
+需要对复制的cookie进行处理，转成json
+
+可以用这个网站：https://uutool.cn/cookie2json/
+
+3. 复制cookie到代码中
+4. 运行代码

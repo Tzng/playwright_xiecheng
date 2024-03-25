@@ -9,6 +9,7 @@ from playwright.sync_api import Playwright, sync_playwright, expect, ElementHand
 
 base_url = "https://you.ctrip.com/sight/beijing1/5306.html#ctm_ref=www_hp_bs_lst"
 
+
 # 导入crawlUtil
 def run(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
@@ -58,15 +59,15 @@ def run(playwright: Playwright) -> None:
             print('内容：', content)
             print('IP属地：', ip_location)
             print('---------------------------------')
-        # 创建包含点评信息的字典并添加到数据列表
-        review_dict = {
-            'user_name': user_name,
-            'review_time': review_time,
-            'score': score,
-            'content': content,
-            'ip_location': ip_location
-        }
-        data.append(review_dict)
+            # 创建包含点评信息的字典并添加到数据列表
+            review_dict = {
+                'user_name': user_name,
+                'review_time': review_time,
+                'score': score,
+                'content': content,
+                'ip_location': ip_location
+            }
+            data.append(review_dict)
         # 如果有下一页
         if next_page:
             # 休息1 ~ 3秒
@@ -76,12 +77,14 @@ def run(playwright: Playwright) -> None:
         else:
             # 否则退出循环
             break
-    # 将对象列表转换为DataFrame
-    df = pd.DataFrame(data)
-    df.to_excel('output.xlsx', index=False)
+    # 将data写入到一个json文件中去
+    with open('携程.json', 'w') as f:
+        f.write(str(data))
+
     # ---------------------
     context.close()
     browser.close()
+
 
 with sync_playwright() as playwright:
     run(playwright)
