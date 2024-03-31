@@ -1,40 +1,15 @@
-import datetime
-import html
 import random
 import re
 from time import sleep
-import pandas as pd
 
 from playwright.sync_api import Playwright, sync_playwright, expect, ElementHandle
 
 base_url = "https://i.meituan.com/deal/704386554/feedback"
 
-
-# 转换为Playwright所需的Cookie格式
-def convert_to_playwright_cookies(json_obj, domain):
-    cookies = []
-    for name, value in json_obj.items():
-        cookie = {
-            'name': name,
-            'value': value,
-            'domain': domain,
-            'path': '/',
-            'expires': -1  # Session cookie
-        }
-        cookies.append(cookie)
-    return cookies
-
-
 # 导入crawlUtil
 def run(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
-    # 这里写自己的cookie
-    cookies = {
-
-    }
-    playwright_cookies = convert_to_playwright_cookies(cookies, 'i.meituan.com')
-    context = browser.new_context()
-    context.add_cookies(playwright_cookies)
+    context = browser.new_context(storage_state='meituan_login.json')
     page = context.new_page()
     page.goto(base_url)
     # 获取account的值，得到总数
@@ -76,18 +51,20 @@ def run(playwright: Playwright) -> None:
                 'content': content
             }
             data.append(review_dict)
+            # 页面向下滚动
+            page.evaluate('window.scrollBy(0, 400)')
         # 休息2到3秒
-        # sleep(random.randint(10, 20))
+        sleep(random.randint(30, 60))
         # 打印下当前数据的总数
         print('当前数据总数：', len(data))
-        break
         # 点击文字为下一页的a标签
-        # next_page = page.query_selector('a:has-text("下一页")')
-        # if next_page:
-        #     # 如果a标签的class包含disabled，说明是最后一页
-        #     if 'disabled' in next_page.get_attribute('class'):
-        #         break
-        #     next_page.click()
+        next_page = page.query_selector('a:has-text("下一页")')
+        if next_page:
+            # 如果a标签的class包含disabled，说明是最后一页
+            if 'disabled' in next_page.get_attribute('class'):
+                break
+            next_page.click()
+            print('下一页')
     # 将data写入到一个json文件中去
     with open('美团.json', 'w') as f:
         f.write(str(data))

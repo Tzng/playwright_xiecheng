@@ -36,16 +36,18 @@ python3 xiecheng.py
 
 # 爬取美团点评的数据
 
-## 获取cookie
+## 先运行美团-登录.py
 
-1. 打开浏览器，登录美团点评
-2. 打开开发者工具，找到cookie
+```shell
+python3 美团-登录.py
+```
 
-![img.png](./img/img.png)
+这个代码是用来获取cookie的，你需要在弹出的页面中进行登录
 
-需要对复制的cookie进行处理，转成json
+然后登录成功后，等待网页自己关闭
 
-可以用这个网站：https://uutool.cn/cookie2json/
+就可以看到目录有一个meituan_login.json了
 
-3. 复制cookie到代码中
-4. 运行代码
+## 开始爬取
+
+运行美团.py文件就好了
